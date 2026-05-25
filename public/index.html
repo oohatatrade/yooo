@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>秋田県 入札情報取得</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <section class="toolbar">
+        <div>
+          <h1>秋田県 入札情報取得</h1>
+          <p>電子入札システムの契約結果・発注情報を検索し、一覧をExcelにまとめます。</p>
+        </div>
+        <a id="sourceLink" class="source-link" href="https://cals05.pref.akita.lg.jp/ecydeen/do/PPI/keiyaku" target="_blank" rel="noreferrer">取得元</a>
+      </section>
+
+      <section class="panel">
+        <form id="searchForm" class="grid">
+          <label>
+            取得種別
+            <select name="infoType" id="infoType">
+              <option value="contract" selected>契約結果情報</option>
+              <option value="order">発注情報</option>
+            </select>
+          </label>
+
+          <label>
+            契約年度
+            <select name="fiscalYear">
+              <option value="2026" selected>令和8年</option>
+              <option value="2025">令和7年</option>
+              <option value="2024">令和6年</option>
+              <option value="2023">令和5年</option>
+              <option value="2022">令和4年</option>
+            </select>
+          </label>
+
+          <label>
+            調達区分
+            <select name="procurementCategory">
+              <option value="">指定しない</option>
+              <option value="00">工事</option>
+              <option value="01">委託</option>
+            </select>
+          </label>
+
+          <label class="wide">
+            工事・委託名称キーワード
+            <textarea name="keywords" rows="4" placeholder="未入力なら全件取得。複数ある場合は改行、カンマ、読点で区切れます。"></textarea>
+          </label>
+
+          <label>
+            工事・委託場所
+            <input name="location" type="text" placeholder="例: 秋田市" />
+          </label>
+
+          <label>
+            請負者名
+            <input name="contractor" type="text" placeholder="例: 株式会社..." />
+          </label>
+
+          <label>
+            最大取得ページ
+            <input name="maxPages" type="number" min="0" value="0" />
+            <span>0は全ページ</span>
+          </label>
+
+          <div class="actions">
+            <button id="runButton" type="submit">取得してExcel作成</button>
+            <button id="cancelButton" class="secondary" type="button" hidden>キャンセル</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="status" id="status" aria-live="polite">
+        条件を指定して取得を開始してください。
+      </section>
+
+      <section class="result-bar" id="resultBar" hidden>
+        <div>
+          <strong id="countText">0件</strong>
+          <span>取得しました。</span>
+        </div>
+        <a id="downloadLink" class="download" href="#">Excelをダウンロード</a>
+      </section>
+
+      <section class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th id="idHeader">契約公表番号</th>
+              <th id="dateHeader">契約日</th>
+              <th>工事・委託名称</th>
+              <th>場所</th>
+              <th id="partyHeader">請負者</th>
+              <th id="amountHeader">契約金額</th>
+              <th>調達区分</th>
+            </tr>
+          </thead>
+          <tbody id="previewBody">
+            <tr><td colspan="7" class="empty">取得結果のプレビューがここに表示されます。</td></tr>
+          </tbody>
+        </table>
+      </section>
+    </main>
+
+    <script src="/app.js"></script>
+  </body>
+</html>
